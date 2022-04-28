@@ -43,7 +43,18 @@ const index = ( { articles }) => {
     )
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (context) => {
+    const myCookie = context.req?.cookies || "";
+
+    if (myCookie.token !== process.env.TOKEN) {
+        return {
+            redirect:{
+                destination: "/admin/login",
+                permanent: false,
+            }
+        }
+    }
+
     const res = await axios.get("http://localhost:3000/api/articles");
   
     return {
