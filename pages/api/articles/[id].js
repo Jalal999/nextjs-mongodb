@@ -18,8 +18,11 @@ export default async function handler(req,res) {
 
     if(method === "PUT") {
         try{
-            const product = await Article.create(req.body)
-            res.status(201).json(product)
+            const article = await Article.findOneAndUpdate(req.body)
+            // article.title = req.body.title
+            // article.description = req.body.description
+            // await article.save
+            res.status(201).json(article)
         }catch(err){
             res.status(500).json(err)
         }

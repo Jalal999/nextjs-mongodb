@@ -1,9 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
+import Edit from "../../components/Edit";
 import styles from "../../styles/Admin.module.css"
 
 const index = ( { articles }) => {
     const [articleList, setArticleList] = useState(articles);
+    const [close, setClose] = useState(true)
+
+
     const handleDelete = async (id) => {
         try {
             const res = await axios.delete("http://localhost:3000/api/articles/"+id)
@@ -11,6 +15,11 @@ const index = ( { articles }) => {
         } catch(err) {
             console.log(err)
         }
+    }
+
+    const handleEdit = async (article) => {
+        setClose(false)
+
     }
     return (
         <div className={styles.container}>
@@ -25,13 +34,15 @@ const index = ( { articles }) => {
                         </tr>
                     </tbody>
                         {articleList.map(article => (
+                            
                             <tbody>
+                                {!close && <Edit setClose={setClose} article={article} /> }
                                 <tr className={styles.trTitle}>
                                     <td>{article._id.slice(0, 5)}...</td>
                                     <td>{article.title}</td>
                                     <td>{article.description}</td>
                                     <td>
-                                        <button className={styles.button}>Edit</button>
+                                        <button className={styles.button} onClick={() => handleEdit(article)}>Edit</button>
                                         <button className={styles.button} onClick={() => handleDelete(article._id)}>Delete</button>
                                     </td>
                                 </tr>
@@ -45,7 +56,7 @@ const index = ( { articles }) => {
 
 export const getServerSideProps = async (context) => {
     const myCookie = context.req?.cookies || "";
-
+    
     if (myCookie.token !== process.env.TOKEN) {
         return {
             redirect:{
