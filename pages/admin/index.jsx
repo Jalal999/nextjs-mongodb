@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
-import Edit from "../../components/Edit";
+import Edit from "../../components/Modals/Edit";
 import styles from "../../styles/Admin.module.css"
+import Button from '@mui/material/Button';
+
 
 const index = ( { articles }) => {
     const [articleList, setArticleList] = useState(articles);
@@ -34,7 +36,6 @@ const index = ( { articles }) => {
                         </tr>
                     </tbody>
                         {articleList.map(article => (
-                            
                             <tbody>
                                 {!close && <Edit setClose={setClose} article={article} /> }
                                 <tr className={styles.trTitle}>
@@ -42,8 +43,8 @@ const index = ( { articles }) => {
                                     <td>{article.title}</td>
                                     <td>{article.description}</td>
                                     <td>
-                                        <button className={styles.button} onClick={() => handleEdit(article)}>Edit</button>
-                                        <button className={styles.button} onClick={() => handleDelete(article._id)}>Delete</button>
+                                        <Button variant="contained" color="success" onClick={() => handleEdit(article)}>Edit</Button>
+                                        <Button variant="outlined" color="error" onClick={() => handleDelete(article._id)}>Delete</Button>
                                     </td>
                                 </tr>
                             </tbody>

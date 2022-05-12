@@ -1,22 +1,25 @@
 import Head from 'next/head'
-import ArticleList from '../components/ArticleList'
+import ArticleList from '../components/ArticleList/index'
 import { server } from '../config'
 import axios from "axios"
 import { useState } from 'react'
-import AddButton from '../components/AddButton'
-import Add from '../components/Add'
+import AddButton from '../components/Buttons/AddButton'
+import Add from '../components/Modals/Add'
+import Button from '@mui/material/Button';
+import StyledButton from '../components/Buttons/StyledButton'
+
 
 export default function Home({ articles, admin }) {
   const [close, setClose] = useState(true)
-  
+
   return (
     <div>
-      {admin && <AddButton setClose={setClose} />}
       {!close && <Add setClose={setClose} /> }
       <ArticleList articles={articles} />
+      <StyledButton />
+      {admin && <Button onClick={()=>setClose(false)} variant="contained">Add New Article</Button>}
     </div>
-  )
-}
+  )}
 
 
 // export const getStaticProps = async () => {
